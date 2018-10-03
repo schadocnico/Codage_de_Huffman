@@ -1,16 +1,9 @@
 #include "utils.h"
 #include "heapq.h"
 
-struct noeud {
-	void* val;
-	struct noeud* suivant;
-};
-
-typedef struct noeud* nd;
-
 /* ----- Methode de Noeud -----*/
-nd _creer_noeud(void* _val, void(* _copier(void*, void**))) {
-	nd n = (nd)malloc(sizeof(struct noeud));
+ndh _creer_noeudh(void* _val, void(* _copier)(void*, void**)) {
+	ndh n = (ndh)malloc(sizeof(struct noeud));
 
 	_copier(_val, &(n->val));
 	n->suivant = NULL;
@@ -19,10 +12,21 @@ nd _creer_noeud(void* _val, void(* _copier(void*, void**))) {
 
 }
 
+void _detruire_tout_noeudh(ndh* n, void(* _detruire)(void**)) {
+    if ((*n)!=NULL) {
+        if ((*n)->suivant != NULL)
+            _detruire_tout_noeudh(&((*n)->suivant), _detruire);
+        _detruire(&((*n)->val));
+        free(*n);
+        *n = NULL;
+    }
+}
+
+
 /*----- Methode de heap liste -----*/
 
-heap creer_heap(void(* _copier)(void*, void**), void(* _detruire)(void**), int(*_comparer)(void*, void*)) {
-	heap h = (heap)malloc( sizeof(struct heap_liste) );
+heapq creer_heap(void(* _copier)(void*, void**), void(* _detruire)(void**), int(*_comparer)(void*, void*)) {
+	heapq h = (heapq)malloc( sizeof(struct heap_liste) );
 
 	h->taille = 0;
 	h->tete = NULL;
@@ -34,37 +38,40 @@ heap creer_heap(void(* _copier)(void*, void**), void(* _detruire)(void**), int(*
 
 }
 
-void ajouter_heap(void* _val, heap h) {
-	nd tete = h->tete;
-	nd tmp = h->tete;
-	nd prec = NULL;
-
-	nd n = _creer_noeud(_val, h->copier);
+void ajouter_heap(void* _val, heapq h) {
+	
+	ndh n = _creer_noeudh(_val, h->copier);
 
 	if(h->tete == NULL) {
 		h->tete = n;
+
+	} else if(h->comparer(_val, h->tete->val) <= 0){
+		n->suivant = h->tete;
+		h->tete = n;
+
 	} else {
-		while(comparer((h->tete)->val,n->val) < 1) {
+		ndh tmp = h->tete->suivant;
+		ndh prec = h->tete;
+
+		while(tmp != NULL && h->comparer(_val, tmp->val) > 0) {
 			prec = tmp;
-			tmp = (h->tete)->suivant;
-			h->tete = (h->tete)->suivant;
+			tmp = tmp->suivant;
 		}
 
-		h->tete = n;
-		(h->tete)->suivant = tmp->suivant;
 		prec->suivant = n;
-		h->tete = tete;
+		n->suivant = tmp;
 	}
 
 	(h->taille)++;
 
 }
 
-void* extraire_min(heap h) {
-	nd tmp = (h->tete)->suivant;
+void* extraire_min(heapq h) {
+	ndh tmp = (h->tete)->suivant;
 
 	void* val = (h->tete)->val;
 	h->tete->suivant = NULL;
+	free(h->tete);
 	
 	h->tete = tmp;
 
@@ -74,7 +81,14 @@ void* extraire_min(heap h) {
 
 }
 
-int taille(heap h){
+void free_heap(heapq* h){
+	if((*h)->tete != NULL)
+		_detruire_tout_noeudh(&((*h)->tete), (*h)->detruire);
+	free(*h);
+	*h = NULL;
+}
+
+int taille(heapq h){
 	return h->taille;
 }
 		
