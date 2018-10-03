@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include "utils.h"
 #include "heapq.h"
 
 struct noeud {
