@@ -2,7 +2,7 @@
 #define ARBRE_H
 
 typedef struct noeuda {
-    int cle;
+    void* valeur;
     struct noeuda *droite;
     struct noeuda *gauche;
 };
@@ -10,13 +10,13 @@ typedef struct noeuda {
 typedef struct noeuda* nda;
 
 struct arbre {
-    nda tete;
+    nda racine;
     void(*copier)(void*, void**);
     void(*detruire)(void**);
 };
 
 typedef struct arbre* arb;
 
-arb creer_arbre(void(*_copier)(void*, void**), void(*_detruire)(void**));
+arb creer_arbre(void *_val_racine, void(*_copier)(void*, void**), void(*_detruire)(void**));
 
-#endif //UNTITLED_LISTE_GENERIQUE_H
+#endif //ARBRE_H
