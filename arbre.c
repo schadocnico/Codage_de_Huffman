@@ -79,4 +79,39 @@ void detruire_arbre(arb* a) {
     *a = NULL;
 }
 
+void** rechercher_tout(arb a, char *c){
+	
+	/*
+	void *add;
+	void** tab = malloc((int)strlen(c)/4 * sizeof(a->copier(a->racine->valeur, &add)));
+	free(add);
+	*/
+	void** tab = malloc((int)strlen(c)/4 * sizeof(void*));
 
+	nda tmp = (nda)malloc(sizeof(struct noeuda));
+	tmp = a->racine;
+	int i = 0;
+	int nb = 0;
+
+		while(i < (int)strlen(c)){
+			if(tmp->droite != NULL && tmp->gauche != NULL){
+				if(c[i] == '0'){
+					tmp = tmp->gauche;
+					i++;
+				}
+				else{
+					tmp = tmp->droite;
+					i++;
+				}
+			}
+			else{
+			//
+			tab[nb] = tmp->valeur; 
+			tmp = a->racine;
+			nb++;
+			
+			}
+		}
+	tab = realloc(tab, sizeof(void*) * nb);
+	return tab;
+}

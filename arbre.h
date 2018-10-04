@@ -22,5 +22,6 @@ arb fusionner_arbre(arb* a_droite, arb* a_gauche, void(*_addition)(void*, void*,
 void changer_val_racine(void* _val, arb a);
 void* val_racine(arb a);
 void detruire_arbre(arb* a);
+void** rechercher_tout(arb a, char *c);
 
 #endif //ARBRE_H
