@@ -1,11 +1,11 @@
 CC=gcc
-CFLAGS=-W -Wall -ansi -pedantic -std=c99
+CFLAGS=-W -Wall -ansi -pedantic -std=c99 -Wfatal-errors -Werror
 LDFLAGS=
 EXEC=main
 
 all: $(EXEC)
 
-main: main.o huffman.o arbre.o utils.h heapq.o
+main: main.o utils.h couple.o heapq.o huffman.o arbre.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 
