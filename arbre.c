@@ -44,20 +44,18 @@ arb fusionner_arbre(arb* a_droite, arb* a_gauche, void(*_addition)(void*, void*,
     nda n_gauche = (*a_gauche)->racine;
 
     void *add;
-
-    //puts("_add ?");
     
     _addition(n_droite->valeur, n_gauche->valeur, &add);
 
-    //puts("_add !");
-
     arb a = creer_arbre(add, (*a_droite)->copier, (*a_droite)->detruire);
 
-    (*a_droite)->detruire(&add);
-    
+    free(add);
 
-    *a_droite = NULL;
-    *a_gauche = NULL;
+    (*a_droite)->racine = NULL;
+    (*a_gauche)->racine = NULL;
+
+    detruire_arbre(a_droite);
+    detruire_arbre(a_gauche);
 
     a->racine->droite = n_droite;
     a->racine->gauche = n_gauche;
@@ -79,31 +77,6 @@ void detruire_arbre(arb* a) {
 
     free(*a);
     *a = NULL;
-}
-
-void afficher_arbre(arb a, void(*_afficher)(void*)){
-    printf("[");
-    _afficher(a->racine->valeur);
-    printf("]\n");
-}
-
-void _afficher_noeud_tout(nda n, void(*_afficher)(void*)){
-    _afficher(n->valeur);
-    printf(" -> [ G(");
-
-
-    if (n->gauche != NULL){
-        _afficher_noeud_tout(n->gauche, _afficher);
-    }
-
-    printf(") ; D(");
-
-    if (n->droite != NULL){
-        _afficher_noeud_tout(n->droite, _afficher);
-    }
-    printf(") ] ");
-    
-    
 }
 
 
