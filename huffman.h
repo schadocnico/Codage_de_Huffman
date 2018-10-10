@@ -7,7 +7,7 @@
 #include "couple.h"
 
 int* occurence_ASCII(char *chaine);
-arb arbre_huffman(char *chaine);
+arb* arbre_huffman(char *chaine);
 
 
 #endif //HUFFMAN_H

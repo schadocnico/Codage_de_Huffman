@@ -39,28 +39,33 @@ arb creer_arbre(void *_val_racine, void(*_copier)(void*, void**), void(*_detruir
 
 }
 
+
 arb fusionner_arbre(arb* a_droite, arb* a_gauche, void(*_addition)(void*, void*, void**)) {
-    nda n_droite = (*a_droite)->racine;
-    nda n_gauche = (*a_gauche)->racine;
+    nda* n_droite = &((*a_droite)->racine);
+    nda* n_gauche = &((*a_gauche)->racine);
 
     void *add;
 
-    //puts("_add ?");
-    
-    _addition(n_droite->valeur, n_gauche->valeur, &add);
+    _addition((*n_droite)->valeur, (*n_gauche)->valeur, &add);
 
-    //puts("_add !");
 
     arb a = creer_arbre(add, (*a_droite)->copier, (*a_droite)->detruire);
 
+    a->racine->droite = *n_droite;
+    a->racine->gauche = *n_gauche;
+
     (*a_droite)->detruire(&add);
+
+
+    (*a_droite)->racine = NULL;
+    (*a_gauche)->racine = NULL;
     
+
+    free(*a_droite);
+    free(*a_gauche);
 
     *a_droite = NULL;
     *a_gauche = NULL;
-
-    a->racine->droite = n_droite;
-    a->racine->gauche = n_gauche;
 
     return a;
 

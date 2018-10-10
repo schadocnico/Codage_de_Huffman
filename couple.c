@@ -1,4 +1,9 @@
-#include "utils.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <time.h>
+#include <math.h>
 #include "couple.h"
 
 couple* creer_couple(void *_val1, void *_val2, void(* _copier_val1)(void*, void**), void(* _detruire_val1)(void**),
