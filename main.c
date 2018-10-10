@@ -16,13 +16,22 @@ void _afficher_couple_intchar(void *_val){
 
 int main(void) {
 
-    arb* fin = arbre_huffman("aaaafregregeegergrgergegr");
+    /*arb* fin = arbre_huffman("aaaafregregeegergrgergegr");
 
 
     _afficher_noeud_tout((*fin)->racine, &_afficher_couple_intchar);
 
     detruire_arbre(fin);
-    free(fin);
+    free(fin);*/
+
+    char *c = malloc(10 * sizeof(char));
+
+    c[0] = 'a';
+    c[1] = '2';
+
+    printf("%d", (int)strlen(c));
+
+    free(c);
 
     return 0;
 }

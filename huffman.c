@@ -135,6 +135,13 @@ void _addition_couple_intchar(void* _val1, void* _val2, void** _res){
 
 }
 
+int _equals_coupleintchar(void* _couple1, void* _couple2){
+    couple* couple1 = (couple*)_couple1;
+    couple* couple2 = (couple*)_couple2;
+
+    return (couple1->val2 == couple2->val2)?1:0;
+}
+
 //Arbre_couple ------------------------------
 
 arb _creer_arbre_coupleintchar(couple* c){
@@ -162,7 +169,7 @@ int _comparer_arbre_couple_ptr(void* _val1, void* _val2){
 }
 
 /*
-
+    #####################################################################
 */
 int* occurrences_ASCII(char *chaine, int* tab){
 
@@ -212,5 +219,22 @@ arb* arbre_huffman(char *chaine){
     free(liste);
 
     return fin;
+
+}
+
+char* compression_huffman(arb arbre, char* chaine){
+    int* occurrences  = calloc(256, sizeof(int) );
+    char** res_char = malloc(256 * sizeof(char*) );
+
+    int a = (int)strlen(chaine);
+    printf("%d", a);
+
+    for(int i = 0; i < 256; i++) {
+        if (occurrences[i] > 0){
+            res_char[i] = chemin_element(_creer_couple_intchar(0, (char)occurrences[i]), arbre, &_equals_coupleintchar);
+        }
+    }
+
+    return NULL;
 
 }

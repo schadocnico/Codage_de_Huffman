@@ -111,4 +111,11 @@ void _afficher_noeud_tout(nda n, void(*_afficher)(void*)){
     
 }
 
+char* chemin_element(void* _element, arb a, int(*_equals)(void*, void*)){
+    _equals(a, NULL);
+    if(_equals(_element, NULL))
+        return NULL;
+    return NULL;
+}
+
 
