@@ -22,41 +22,37 @@ void ecrire(char *c) {
 
 }
 
-char* lire(){
+void lire(){
 	
-	
-	int cpt = 0;
-	int cpt2 = 0;
 	FILE* fichier = NULL;
+	int cpt = 0;
+	fichier = fopen("fichier.txt","r");
 
-	fichier = fopen("test.txt","r");
-
-	if (fichier != NULL)
+	if (fichier == NULL)
 	{
+		printf("impossible d'ouvrir le fichier");		
+	}
 	
+	else {
 		while(fgetc(fichier) != EOF){
 		cpt++;
 		}
+	printf("%d",cpt);
+	}
 
-	char chaine[cpt];
+	char chaine[5];
 	
-	while (fgets(chaine, cpt, fichier) != NULL)
+	if(fgets(chaine, 5, fichier) != NULL)
 	{ 
 		puts(chaine);
 	}
 		
 
 	fclose(fichier);
-	return chaine;
 
 	}
 	
-	else {
-		
-		printf("Impossible d'ouvrir le fichier test.txt");	
-	}
 
-	return NULL;
-	
+int main(void) {
+	lire();
 }
-
