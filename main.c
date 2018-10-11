@@ -3,7 +3,6 @@
 #include "arbre.h"
 #include "heapq.h"
 #include "couple.h"
-#include "bit.h"
 
 void _afficher_couple_intchar(void *_val){
     couple* c = (couple*)_val;
@@ -34,22 +33,35 @@ int main(int argc, char *argv[]) {
 
 
             FILE* fichier = NULL;
-            char chaine[1000] = ""; // Chaîne vide de taille TAILLE_MAX
+            char chaine[100] = ""; // Chaîne vide de taille TAILLE_MAX
 
             fichier = fopen("test.txt", "r");
 
             if (fichier != NULL) {
-                fgets(chaine, 1000,
+                fgets(chaine, 100,
                       fichier); // On lit maximum TAILLE_MAX caractères du fichier, on stocke le tout dans "chaine"
 
                 occurrences_ASCII(chaine, occurrences);
 
                 fclose(fichier);
             }
+
+            for (int i = 0; i < 256; ++i) {
+                if(occurrences[i] != 0)
+                    printf("%c(%d)\n", (char)i, occurrences[i]);
+
+            }
+
+
             arb* fin = arbre_huffman(occurrences);
+
+
+
             _afficher_noeud_tout((*fin)->racine, &_afficher_couple_intchar);
 
-            bit *tab = chemin_tout_element(*fin, &couple_to_int);
+            char **tab = chemin_tout_element(*fin, &couple_to_int);
+
+
 
             //--------------------LIRE CARACTERE PAR CARACTERE----------------------------
 
@@ -59,25 +71,26 @@ int main(int argc, char *argv[]) {
             fichier_lecture = fopen("test.txt", "r");
 
             FILE* fichier_ecrire = NULL;
-            fichier_ecrire = fopen("test_bin.bin", "wb");
+            fichier_ecrire = fopen("test_bin.txt", "w");
 
             if (fichier_lecture != NULL)
             {
 
-                do
+                while ((caractereActuel = fgetc(fichier_lecture)) != EOF)
                 {
-                    caractereActuel = fgetc(fichier_lecture);
-
-                    unsigned int valeur = tab[caractereActuel].valeur;
-
-
-                    fwrite(&valeur,tab[caractereActuel].taille,1,fichier_ecrire);
-
-                } while (caractereActuel != EOF);
+                    fprintf(fichier_ecrire, "%s", tab[caractereActuel]);
+                }
 
                 fclose(fichier_lecture);
                 fclose(fichier_ecrire);
             }
+            for (int i = 0; i < 256; ++i) {
+                free(tab[i]);
+
+            }
+            free(tab);
+            detruire_arbre(fin);
+            free(fin);
 
 
 

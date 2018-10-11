@@ -1,4 +1,5 @@
 #include "huffman.h"
+#include "heapq.h"
 
 void _copier_int(void* val1, void** val2){
     *val2 = (int*)malloc(sizeof(int));
@@ -180,7 +181,6 @@ void occurrences_ASCII(char *chaine, int* tab){
 }
 
 arb* arbre_huffman(int *occurrences){
-
 
     heapq liste = creer_heap(&_copier_arbre_ptr, &_detruire_arbre_ptr, &_comparer_arbre_couple_ptr);
 

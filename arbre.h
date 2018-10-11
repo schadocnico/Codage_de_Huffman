@@ -25,6 +25,6 @@ void changer_val_racine(void* _val, arb a);
 void* val_racine(arb a);
 void detruire_arbre(arb* a);
 void _afficher_noeud_tout(nda n, void(*_afficher)(void*));
-bit* chemin_tout_element(arb a, int(*_val_to_int)(void*));
+char** chemin_tout_element(arb a, int(*_val_to_int)(void*));
 
 #endif //ARBRE_H

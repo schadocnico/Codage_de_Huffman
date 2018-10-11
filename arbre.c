@@ -1,7 +1,5 @@
 #include "utils.h"
 #include "arbre.h"
-#include "bit.h"
-
 
 nda _creer_noeuda(void *_val, void(*_copier)(void*, void**)) {
     nda n = (nda)malloc(sizeof(struct noeuda));
@@ -112,27 +110,25 @@ void _afficher_noeud_tout(nda n, void(*_afficher)(void*)){
     
 }
 
-void _chemin_tout_element(nda n, bit* tab, bit c, int(*_val_to_int)(void*)){
+void _chemin_tout_element(nda n, char** tab, char *c, int(*_val_to_int)(void*)){ //OPTIMISATION
+    int taille = (int)strlen(c);
     if (n->droite != NULL && n->gauche != NULL){
-        c.valeur <<= 1;
-        c.taille += 1;
-
+        c[taille] = '0';
+        c[taille+1] = '\0';
         _chemin_tout_element(n->gauche, tab, c, _val_to_int);
 
-        c.valeur |= 1;
+        c[taille] = '1';
         _chemin_tout_element(n->droite, tab, c, _val_to_int);
     } else {
-        tab[_val_to_int(n->valeur)] = c;
+        tab[_val_to_int(n->valeur)] = calloc(10, sizeof(char));
+        strcpy(tab[_val_to_int(n->valeur)], c);
     }
 
 }
 
-bit* chemin_tout_element(arb a, int(*_val_to_int)(void*)){
-    bit* tab = calloc(256, sizeof(bit*));
-    bit b = {0, 0};
-
-    if (a->racine->droite == NULL)
-        b.taille += 1;
+char** chemin_tout_element(arb a, int(*_val_to_int)(void*)){
+    char** tab = calloc(256, sizeof(char*));
+    char b[8] = {0};
 
     _chemin_tout_element(a->racine, tab, b, _val_to_int);
 
