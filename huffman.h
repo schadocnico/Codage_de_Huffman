@@ -6,8 +6,7 @@
 #include "heapq.h"
 #include "couple.h"
 
-int* occurence_ASCII(char *chaine);
-arb* arbre_huffman(char *chaine);
-
+void occurrences_ASCII(char *chaine, int* tab);
+arb* arbre_huffman(int *occurrences);
 
 #endif //HUFFMAN_H

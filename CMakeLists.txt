@@ -17,4 +17,4 @@ add_executable(Codage_de_Huffman
         huffman.c
         huffman.h
         main.c
-        utils.h)
+        utils.h bit.c bit.h)

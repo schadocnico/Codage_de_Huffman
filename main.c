@@ -3,6 +3,7 @@
 #include "arbre.h"
 #include "heapq.h"
 #include "couple.h"
+#include "bit.h"
 
 void _afficher_couple_intchar(void *_val){
     couple* c = (couple*)_val;
@@ -12,26 +13,97 @@ void _afficher_couple_intchar(void *_val){
     printf(")");
 }
 
+int couple_to_int(void* _couple){
+    couple* cp = (couple*)_couple;
+    char c = (char)(*(char*)cp->val2);
+
+    return (int)c;
+}
+
 //MAIN -------------------
 
-int main(void) {
+int main(int argc, char *argv[]) {
 
-    /*arb* fin = arbre_huffman("aaaafregregeegergrgergegr");
+    printf("%s", argv[0]);
+
+    if(argc != 4){
+        return 1;
+    }else{
+        if (strcmp(argv[1], "-c") == 0){
+            int *occurrences  = calloc(256, sizeof(int) );
+
+
+            FILE* fichier = NULL;
+            char chaine[1000] = ""; // Chaîne vide de taille TAILLE_MAX
+
+            fichier = fopen("test.txt", "r");
+
+            if (fichier != NULL) {
+                fgets(chaine, 1000,
+                      fichier); // On lit maximum TAILLE_MAX caractères du fichier, on stocke le tout dans "chaine"
+
+                occurrences_ASCII(chaine, occurrences);
+
+                fclose(fichier);
+            }
+            arb* fin = arbre_huffman(occurrences);
+            _afficher_noeud_tout((*fin)->racine, &_afficher_couple_intchar);
+
+            bit *tab = chemin_tout_element(*fin, &couple_to_int);
+
+            //--------------------LIRE CARACTERE PAR CARACTERE----------------------------
+
+            FILE* fichier_lecture = NULL;
+            int caractereActuel = 0;
+
+            fichier_lecture = fopen("test.txt", "r");
+
+            FILE* fichier_ecrire = NULL;
+            fichier_ecrire = fopen("test_bin.bin", "wb");
+
+            if (fichier_lecture != NULL)
+            {
+
+                do
+                {
+                    caractereActuel = fgetc(fichier_lecture);
+
+                    unsigned int valeur = tab[caractereActuel].valeur;
+
+
+                    fwrite(&valeur,tab[caractereActuel].taille,1,fichier_ecrire);
+
+                } while (caractereActuel != EOF);
+
+                fclose(fichier_lecture);
+                fclose(fichier_ecrire);
+            }
+
+
+
+
+
+        }
+    }
+
+
+
+    /*arb* fin = arbre_huffman("Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n Duis suscipit bibendum urna sit amet pellentesque. Nulla ullamcorper libero luctus pharetra gravida. Vestibulum vulputate elementum justo. Vivamus quis justo ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras lobortis arcu sit amet erat rhoncus, eget faucibus ligula placerat. Fusce sed nibh id felis sagittis placerat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec consequat augue id dolor ultricies euismod. Nullam imperdiet ut mi eu iaculis. Vestibulum molestie lorem nunc, ac auctor dolor vulputate nec. Curabitur vel facilisis justo.\n");
 
 
     _afficher_noeud_tout((*fin)->racine, &_afficher_couple_intchar);
 
+    bit *tab = chemin_tout_element(*fin, &couple_to_int);
+
+    for (int i = 0; i < 256; ++i) {
+        if(tab[i].taille != 0)
+            printf("%hhx(%x)\n", (unsigned char) i, tab[i].valeur);
+
+    }
+
     detruire_arbre(fin);
-    free(fin);*/
-
-    char *c = malloc(10 * sizeof(char));
-
-    c[0] = 'a';
-    c[1] = '2';
-
-    printf("%d", (int)strlen(c));
-
-    free(c);
+    free(fin);
+    free(tab);*/
 
     return 0;
 }

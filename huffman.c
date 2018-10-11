@@ -171,21 +171,16 @@ int _comparer_arbre_couple_ptr(void* _val1, void* _val2){
 /*
     #####################################################################
 */
-int* occurrences_ASCII(char *chaine, int* tab){
+void occurrences_ASCII(char *chaine, int* tab){
 
     for(int i = 0; i < (int)strlen(chaine); ++i) {
         tab[(int)chaine[i]]++;
     }
-
-    return tab;
     
 }
 
-arb* arbre_huffman(char *chaine){
+arb* arbre_huffman(int *occurrences){
 
-    int *occurrences  = calloc(256, sizeof(int) );
-
-    occurrences_ASCII(chaine, occurrences); //tableau de taille 256
 
     heapq liste = creer_heap(&_copier_arbre_ptr, &_detruire_arbre_ptr, &_comparer_arbre_couple_ptr);
 
@@ -222,19 +217,7 @@ arb* arbre_huffman(char *chaine){
 
 }
 
-char* compression_huffman(arb arbre, char* chaine){
-    int* occurrences  = calloc(256, sizeof(int) );
-    char** res_char = malloc(256 * sizeof(char*) );
+/*unsigned long compression_huffman(arb arbre, char* chaine){
 
-    int a = (int)strlen(chaine);
-    printf("%d", a);
 
-    for(int i = 0; i < 256; i++) {
-        if (occurrences[i] > 0){
-            res_char[i] = chemin_element(_creer_couple_intchar(0, (char)occurrences[i]), arbre, &_equals_coupleintchar);
-        }
-    }
-
-    return NULL;
-
-}
+}*/

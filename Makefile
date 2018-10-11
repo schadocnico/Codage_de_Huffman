@@ -150,6 +150,33 @@ arbre.c.s:
 	$(MAKE) -f CMakeFiles/Codage_de_Huffman.dir/build.make CMakeFiles/Codage_de_Huffman.dir/arbre.c.s
 .PHONY : arbre.c.s
 
+bit.o: bit.c.o
+
+.PHONY : bit.o
+
+# target to build an object file
+bit.c.o:
+	$(MAKE) -f CMakeFiles/Codage_de_Huffman.dir/build.make CMakeFiles/Codage_de_Huffman.dir/bit.c.o
+.PHONY : bit.c.o
+
+bit.i: bit.c.i
+
+.PHONY : bit.i
+
+# target to preprocess a source file
+bit.c.i:
+	$(MAKE) -f CMakeFiles/Codage_de_Huffman.dir/build.make CMakeFiles/Codage_de_Huffman.dir/bit.c.i
+.PHONY : bit.c.i
+
+bit.s: bit.c.s
+
+.PHONY : bit.s
+
+# target to generate assembly for a file
+bit.c.s:
+	$(MAKE) -f CMakeFiles/Codage_de_Huffman.dir/build.make CMakeFiles/Codage_de_Huffman.dir/bit.c.s
+.PHONY : bit.c.s
+
 couple.o: couple.c.o
 
 .PHONY : couple.o
@@ -270,6 +297,9 @@ help:
 	@echo "... arbre.o"
 	@echo "... arbre.i"
 	@echo "... arbre.s"
+	@echo "... bit.o"
+	@echo "... bit.i"
+	@echo "... bit.s"
 	@echo "... couple.o"
 	@echo "... couple.i"
 	@echo "... couple.s"

@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "arbre.h"
+#include "bit.h"
 
 
 nda _creer_noeuda(void *_val, void(*_copier)(void*, void**)) {
@@ -111,11 +112,31 @@ void _afficher_noeud_tout(nda n, void(*_afficher)(void*)){
     
 }
 
-char* chemin_element(void* _element, arb a, int(*_equals)(void*, void*)){
-    _equals(a, NULL);
-    if(_equals(_element, NULL))
-        return NULL;
-    return NULL;
+void _chemin_tout_element(nda n, bit* tab, bit c, int(*_val_to_int)(void*)){
+    if (n->droite != NULL && n->gauche != NULL){
+        c.valeur <<= 1;
+        c.taille += 1;
+
+        _chemin_tout_element(n->gauche, tab, c, _val_to_int);
+
+        c.valeur |= 1;
+        _chemin_tout_element(n->droite, tab, c, _val_to_int);
+    } else {
+        tab[_val_to_int(n->valeur)] = c;
+    }
+
 }
 
+bit* chemin_tout_element(arb a, int(*_val_to_int)(void*)){
+    bit* tab = calloc(256, sizeof(bit*));
+    bit b = {0, 0};
+
+    if (a->racine->droite == NULL)
+        b.taille += 1;
+
+    _chemin_tout_element(a->racine, tab, b, _val_to_int);
+
+    return tab;
+
+}
 
