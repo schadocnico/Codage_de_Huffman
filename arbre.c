@@ -112,27 +112,79 @@ void _afficher_noeud_tout(nda n, void(*_afficher)(void*)){
 
 void _chemin_tout_element(nda n, char** tab, char *c, int(*_val_to_int)(void*)){ //OPTIMISATION
     int taille = (int)strlen(c);
-    if (n->droite != NULL && n->gauche != NULL){
-        c[taille] = '0';
-        c[taille+1] = '\0';
-        _chemin_tout_element(n->gauche, tab, c, _val_to_int);
+    char tmp[128];
+    strcpy(tmp, c);
 
-        c[taille] = '1';
-        _chemin_tout_element(n->droite, tab, c, _val_to_int);
+    if (n->droite != NULL){
+        tmp[taille] = '0';
+        tmp[taille+1] = '\0';
+
+        _chemin_tout_element(n->gauche, tab, tmp, _val_to_int);
+
+        tmp[taille] = '1';
+        _chemin_tout_element(n->droite, tab, tmp, _val_to_int);
     } else {
-        tab[_val_to_int(n->valeur)] = calloc(10, sizeof(char));
-        strcpy(tab[_val_to_int(n->valeur)], c);
+        tab[_val_to_int(n->valeur)] = malloc(strlen(tmp)+1);
+        strcpy(tab[_val_to_int(n->valeur)], tmp);
     }
 
 }
 
 char** chemin_tout_element(arb a, int(*_val_to_int)(void*)){
     char** tab = calloc(256, sizeof(char*));
-    char b[8] = {0};
+    /*for (int i = 0; i < 256; ++i) {
+        tab[i] = malloc(128 * sizeof(char));
+    }*/
+    char b[128] = {0};
 
     _chemin_tout_element(a->racine, tab, b, _val_to_int);
 
+    //free(b);
+
+
     return tab;
 
+}
+
+int rechercher_tout(arb a, char *c, void*** tab, int *taille){
+
+    tab = realloc(*tab, (int)strlen(c) * sizeof(void*));
+
+    nda tmp;
+    tmp = a->racine;
+    int i = 0;
+    *taille = 0;
+    int buff = 0;
+
+    while(i < (int)strlen(c)){
+        buff++;
+
+
+        if(tmp->droite != NULL && tmp->gauche != NULL){
+            if(c[i] == '0'){
+                tmp = tmp->gauche;
+                i++;
+            }
+            else{
+                tmp = tmp->droite;
+                i++;
+            }
+
+
+        }
+        else{
+            void *tmp_v;
+            a->copier(tmp->valeur, &tmp_v);
+
+            (*tab)[*taille] = tmp_v;
+            //tab[nb] = tmp->valeur;
+            tmp = a->racine;
+            (*taille)++;
+            buff = 0;
+
+        }
+    }
+    //tab = realloc(tab, sizeof(void*) * nb);
+    return buff;
 }
 

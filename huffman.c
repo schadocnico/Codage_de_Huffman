@@ -210,7 +210,7 @@ arb* arbre_huffman(int *occurrences){
     arb *fin = extraire_min(liste);
 
 
-    free(occurrences);
+    //free(occurrences);
     free(liste);
 
     return fin;

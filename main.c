@@ -6,7 +6,8 @@
 
 void _afficher_couple_intchar(void *_val){
     couple* c = (couple*)_val;
-    printf("(%d,", *((int*)c->val1));
+    if(c->val2 != NULL)
+        printf("(%d,", *((int*)c->val1));
     if(c->val2 != NULL)
         printf("%c", *((char*)c->val2));
     printf(")");
@@ -33,39 +34,44 @@ int main(int argc, char *argv[]) {
 
 
             FILE* fichier = NULL;
-            char chaine[100] = ""; // Chaîne vide de taille TAILLE_MAX
+            char chaine[1000] = ""; // Chaîne vide de taille TAILLE_MAX
 
             fichier = fopen("test.txt", "r");
 
             if (fichier != NULL) {
-                fgets(chaine, 100,
-                      fichier); // On lit maximum TAILLE_MAX caractères du fichier, on stocke le tout dans "chaine"
 
-                occurrences_ASCII(chaine, occurrences);
+
+                while (fgets(chaine, 1000, fichier) != NULL)
+                    occurrences_ASCII(chaine, occurrences);
 
                 fclose(fichier);
             }
 
-            for (int i = 0; i < 256; ++i) {
+            /*for (int i = 0; i < 256; ++i) {
                 if(occurrences[i] != 0)
                     printf("%c(%d)\n", (char)i, occurrences[i]);
 
-            }
+            }*/
 
 
             arb* fin = arbre_huffman(occurrences);
 
 
-
             _afficher_noeud_tout((*fin)->racine, &_afficher_couple_intchar);
 
-            char **tab = chemin_tout_element(*fin, &couple_to_int);
+
+            //char **tab = chemin_tout_element(*fin, &couple_to_int);
+
+            /*for (int i = 0; i < 256; ++i) {
+                printf("%hhx(%s)\n", (unsigned char) i, tab[i]);
+
+            }*/
 
 
 
             //--------------------LIRE CARACTERE PAR CARACTERE----------------------------
 
-            FILE* fichier_lecture = NULL;
+            /*FILE* fichier_lecture = NULL;
             int caractereActuel = 0;
 
             fichier_lecture = fopen("test.txt", "r");
@@ -84,13 +90,57 @@ int main(int argc, char *argv[]) {
                 fclose(fichier_lecture);
                 fclose(fichier_ecrire);
             }
+
+
             for (int i = 0; i < 256; ++i) {
                 free(tab[i]);
 
             }
+
+
+
             free(tab);
-            detruire_arbre(fin);
-            free(fin);
+            //detruire_arbre(fin);
+            //free(fin);
+
+            FILE* fichier2 = NULL;
+            char chaine2[1000] = ""; // Chaîne vide de taille TAILLE_MAX
+            couple **tab2 = malloc(1 * sizeof(couple*));
+            int taille_tab2 = 0;
+
+            fichier2 = fopen("test_bin.txt", "r");
+
+            FILE* fichier2_w = NULL;
+            fichier2_w = fopen("test2.txt", "w");
+
+            _afficher_noeud_tout((*fin)->racine, &_afficher_couple_intchar);
+
+
+            if (fichier2 != NULL) {
+
+
+                while (fgets(chaine2, 1000, fichier2) != NULL) {
+                    rechercher_tout(*fin, chaine2, (void***)&tab2, &taille_tab2);
+
+                    for (int i = 0; i < taille_tab2; ++i) {
+                        fprintf(fichier2_w, "%c", *((char*)tab2[i]->val2));
+                    }
+
+                    for (int j = 0; j < taille_tab2 ; ++j) {
+                        couple* tmp_v = tab2[j];
+                        printf("\n%c", *((char*)tmp_v->val2));
+                        //_afficher_couple_intchar(tmp_v);
+                    }
+
+
+                }
+
+                fclose(fichier2);
+                fclose(fichier2_w);
+            }*/
+
+
+
 
 
 
@@ -118,5 +168,5 @@ int main(int argc, char *argv[]) {
     free(fin);
     free(tab);*/
 
-    return 0;
+    return EXIT_SUCCESS;
 }
